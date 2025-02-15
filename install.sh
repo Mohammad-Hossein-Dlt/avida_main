@@ -18,7 +18,7 @@ sudo apt-get install -y git
 echo "Cloning repository..."
 
 # Replace 'your-token' with your actual GitHub token
-REPO_URL="your-username/your-repo.git"
+REPO_URL="Mohammad-Hossein-Dlt/avida_main"
 TOKEN="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"
 
 git clone https://$TOKEN@github.com/$REPO_URL /home/fastapi-project
