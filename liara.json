@@ -1,0 +1,8 @@
+{
+  "app": "avida-main",
+  "port": 8000,
+  "build": {
+    "location": "iran"
+  },
+  "disks": []
+}

@@ -1,0 +1,8 @@
+services:
+  server:
+    build: .
+    ports:
+      - 8000:8000
+  broker:
+    ports:
+      - 1234:1234
