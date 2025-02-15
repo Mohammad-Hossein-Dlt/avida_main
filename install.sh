@@ -33,6 +33,3 @@ docker run -d -p 8000:8000 --name fastapi-container fastapi-app
 
 # Output the result
 echo "FastAPI is now running on http://localhost:8000"
-
-
-bash <(curl -Ls -u https://raw.githubusercontent.com/Mohammad-Hossein-Dlt/avida_main/master/scripts/install.sh)
