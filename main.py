@@ -114,7 +114,7 @@ async def send_message(request: Request, message: dict):
     #     queue_name=QueueNameHolder.queue_name,
     # )
 
-    response = await send_message_zeromq(encode_id, message, 'tcp://0.0.0.0:1234')
+    response = await send_message_zeromq(encode_id, message, 'tcp://82.115.19.115:1234')
 
     client_ip = request.client.host
 
