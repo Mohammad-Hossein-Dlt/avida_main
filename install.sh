@@ -23,9 +23,9 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 echo "----------------------------------------------------"
-echo "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv)"
+echo "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv, build tools)"
 echo "----------------------------------------------------"
-sudo apt-get install -y git python3 python3-pip python3-venv
+sudo apt-get install -y git python3 python3-pip python3-venv build-essential python3-dev libssl-dev libffi-dev
 
 echo "----------------------------------------------------"
 echo "Step 3: Cloning the repository from GitHub"
@@ -49,8 +49,8 @@ python3 -m venv venv
 # Activate the virtual environment
 source venv/bin/activate
 
-# Upgrade pip
-pip install --upgrade pip
+# Upgrade pip, setuptools, and wheel to avoid build issues
+pip install --upgrade pip setuptools wheel
 
 # Install project dependencies if a requirements.txt file exists
 if [ -f requirements.txt ]; then
