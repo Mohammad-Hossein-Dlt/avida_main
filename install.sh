@@ -31,6 +31,7 @@ docker build -t fastapi-app .
 echo "Running the Docker container..."
 # Check if the container is already running and remove it if needed
 if [ "$(docker ps -q -f name=fastapi-container)" ]; then
+  echo "////////////////////////////////////////////////////////"
   echo "The container is already running. Stopping and removing it..."
   docker stop fastapi-container
   docker rm fastapi-container
