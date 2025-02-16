@@ -25,7 +25,7 @@ sudo apt-get upgrade -y
 echo "----------------------------------------------------"
 echo "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv, build tools)"
 echo "----------------------------------------------------"
-sudo apt-get install -y git python3 python3-pip python3-venv build-essential python3-dev libssl-dev libffi-dev
+sudo apt-get install -y git python3 python3-pip python3-venv build-essential python3-dev libssl-dev libffi-dev libpq-dev
 
 echo "----------------------------------------------------"
 echo "Step 3: Cloning the repository from GitHub"
