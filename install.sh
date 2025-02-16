@@ -23,7 +23,7 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 echo "----------------------------------------------------"
-echo "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv, build tools)"
+echo "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv)"
 echo "----------------------------------------------------"
 sudo apt-get install -y git python3 python3-pip python3-venv
 
@@ -50,7 +50,8 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Upgrade pip, setuptools, and wheel to avoid build issues
-pip install --upgrade pip setuptools wheel
+pip install --upgrade pip
+pip install wheel
 
 # Install project dependencies if a requirements.txt file exists
 if [ -f requirements.txt ]; then
