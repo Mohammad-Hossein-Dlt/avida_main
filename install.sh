@@ -30,12 +30,14 @@ docker build -t fastapi-app .
 # Run Docker container
 echo "Running the Docker container..."
 # Check if the container is already running and remove it if needed
-if [ "$(docker ps -q -f name=myfastapiapp_container)" ]; then
+if [ "$(docker ps -q -f name=fastapi-container)" ]; then
   echo "The container is already running. Stopping and removing it..."
-  docker stop myfastapiapp_container
-  docker rm myfastapiapp_container
+  docker stop fastapi-container
+  docker rm fastapi-container
 fi
 docker run -d -p 8000:8000 --name fastapi-container fastapi-app
 
 # Output the result
 echo "FastAPI is now running on http://localhost:8000"
+
+
