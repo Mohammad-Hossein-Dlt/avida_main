@@ -35,7 +35,8 @@ if [ "$(docker ps -aq -f name=fastapi-container)" ]; then
   docker stop fastapi-container 2>/dev/null || true
   docker rm fastapi-container
 fi
-docker run -d -p 8000:8000 --name fastapi-container fastapi-app
+
+docker run -d --restart always -p 8000:8000 --name fastapi-container fastapi-app
 
 # Output the result
 echo "FastAPI is now running on http://localhost:8000"
