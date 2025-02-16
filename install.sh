@@ -102,6 +102,10 @@ echo "----------------------------------------------------"
 # Install ufw if not already installed
 sudo apt-get install -y ufw
 
+# Allow SSH (port 22) to ensure remote access is not blocked
+echo "Allowing SSH on port 22"
+sudo ufw allow 22/tcp
+
 # Enable ufw if it's not enabled already (this may prompt for confirmation)
 sudo ufw --force enable
 
