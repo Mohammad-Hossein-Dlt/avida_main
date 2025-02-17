@@ -21,6 +21,7 @@ else
   USER_TO_RUN="$(whoami)"
 fi
 
+colored_text "32" "Step 1: Updating the system"
 colored_text "32" "----------------------------------------------------"
 colored_text "32" "Step 1: Updating the system"
 colored_text "32" "----------------------------------------------------"
