@@ -1,16 +1,18 @@
 #!/bin/bash
 
 colored_text(){
-  local color=${1: -"32"}
+  local color=$1
   local text=$2
+
+  if [[ -z "$color" ]]; then
+    color="32"
+  fi
   echo -e "\e[${color}m$text\e[0m"
 }
 
 # Variables - modify as needed
 REPO_URL="Mohammad-Hossein-Dlt/avida_main"
 TARGET_DIR="/home/fastapi-project"
-APP_FILE="main"          # Name of the main Python file (without .py extension)
-APP_VARIABLE="app"       # Name of the FastAPI instance in the main file
 
 # Ports to open in the firewall for external access
 PORTS=("8000" "1234")
