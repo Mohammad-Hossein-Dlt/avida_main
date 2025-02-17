@@ -12,9 +12,10 @@ from main_database.database import check_database, engine
 from main_database.models import Base
 from message_broker.holder import QueueNameHolder
 from message_broker.producer_service import start_up_broker_server
-from message_broker.consumer_service import send_message_broker
-from message_broker.zeromq.server import start_up_zeromq_server
-from message_broker.zeromq.client import send_message_zeromq
+# from message_broker.consumer_service import send_message_broker
+# from message_broker.zeromq.server import start_up_zeromq_server
+# from message_broker.zeromq.client import send_message_zeromq
+# from message_broker.zeromq.proxy import start_proxy_task
 from chats_database.database import init_chats_db
 from routers.admin import assistant
 from routers.general import verify_phone
@@ -63,20 +64,25 @@ async def lifespan(app: FastAPI):
 
     await init_chats_db()
 
-    rpc_server, queue_name, server_task = await start_up_broker_server("queue_name")
-    QueueNameHolder.queue_name = queue_name
-
-    zeromq_server, zeromq_task = await start_up_zeromq_server('tcp://0.0.0.0:1234')
+    # rpc_server, queue_name, server_task = await start_up_broker_server("queue_name")
+    # QueueNameHolder.queue_name = queue_name
+    #
+    # proxy_task, proxy = await start_proxy_task()
+    #
+    # tcp_server, zeromq_task = await start_up_zeromq_server("tcp://0.0.0.0:1234")
 
     update_task = start_update()
 
     yield
 
-    await rpc_server.close()
-    server_task.cancel()
-
-    await zeromq_server.close()
-    zeromq_task.cancel()
+    # await rpc_server.close()
+    # server_task.cancel()
+    #
+    # proxy.close_socket()
+    # proxy_task.cancel()
+    #
+    # await tcp_server.close_socket()
+    # zeromq_task.cancel()
 
     update_task.cancel()
 
@@ -103,10 +109,10 @@ app.include_router(chatting.router, prefix=BASE_URL)
 
 
 @app.post("/send_message")
-async def send_message(request: Request, message: dict):
-    correlation_id = {"user_id": 1, "unique_id": uuid.uuid4().hex}
-
-    encode_id = json.dumps(correlation_id)
+async def send_message(request: Request):
+    # correlation_id = {"user_id": 1, "unique_id": uuid.uuid4().hex}
+    #
+    # encode_id = json.dumps(correlation_id)
 
     # response = await send_message_broker(
     #     correlation_id=encode_id,
@@ -114,60 +120,13 @@ async def send_message(request: Request, message: dict):
     #     queue_name=QueueNameHolder.queue_name,
     # )
 
-    response = await send_message_zeromq(encode_id, message, 'tcp://82.115.19.115:1234')
+    # response = await send_message_zeromq(encode_id, message, "tcp://0.0.0.0:12345")
 
     client_ip = request.client.host
 
     forwarded_ip = request.headers.get("X-Forwarded-For")
 
     return {
-        "r": response,
         "ip": client_ip,
         "forwarded_ip": forwarded_ip,
     }
-
-# TOTAL_REQUESTS = 1_000_000
-#
-#
-# async def client():
-#     ctx = zmq.asyncio.Context.instance()
-#     ctx1 = zmq.asyncio.Context.instance()
-#
-#     send_socket = ctx.socket(zmq.REQ)
-#     send_socket.connect("tcp://localhost:1234")
-#
-#     receive_socket = ctx1.socket(zmq.REP)
-#     receive_socket.bind("tcp://localhost:1234")
-#
-#     time.sleep(1)
-#
-#     async def send_messages():
-#         for i in range(TOTAL_REQUESTS):
-#             print(i)
-#             await send_socket.send(f"Message {i}".encode())
-#             res = await send_socket.recv()
-#
-#     async def receive_messages():
-#
-#         x = 0
-#
-#         while x < TOTAL_REQUESTS:
-#             try:
-#                 reply = await receive_socket.recv()
-#                 await receive_socket.send('Test'.encode())
-#                 print(reply.decode())
-#             except Exception as ex:
-#                 print("Error in server:", ex)
-#
-#             x += 1
-#
-#     send_task = asyncio.create_task(send_messages())
-#     recv_task = asyncio.create_task(receive_messages())
-#
-#     await asyncio.gather(send_task, recv_task)
-#
-#
-# if __name__ == "__main__":
-#     asyncio.run(client())
-
-

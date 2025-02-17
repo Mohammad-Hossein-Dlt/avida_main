@@ -28,11 +28,11 @@ class BrokerClient:
 
 async def send_message_zeromq(correlation_id: str, payload: dict, server_address: str) -> dict:
 
-    rpc_client = BrokerClient(server_address)
-    rpc_client.connect()
+    tcp_client = BrokerClient(server_address)
+    tcp_client.connect()
 
-    response: str = await rpc_client.send_request(correlation_id, payload)
-    rpc_client.close_socket()
+    response: str = await tcp_client.send_request(correlation_id, payload)
+    tcp_client.close_socket()
 
     try:
         response_decode = json.loads(response)

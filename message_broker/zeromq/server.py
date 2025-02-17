@@ -21,7 +21,7 @@ class BrokerServer:
         self.running = False
 
     def connect(self):
-        self.socket.bind(self.bind_address)
+        self.socket.connect(self.bind_address)
 
     async def start_listening(self):
         self.running = True
@@ -49,15 +49,15 @@ class BrokerServer:
         }
         await self.socket.send(json.dumps(response).encode())
 
-    async def close(self):
+    async def close_socket(self):
         self.running = False
         self.socket.close()
         self.context.term()
 
 
 async def start_up_zeromq_server(bind_address: str) -> Tuple[BrokerServer, asyncio.Task]:
-    rpc_server = BrokerServer(bind_address)
-    rpc_server.connect()
-    server_task = asyncio.create_task(rpc_server.start_listening())
+    tcp_server = BrokerServer(bind_address)
+    tcp_server.connect()
+    server_task = asyncio.create_task(tcp_server.start_listening())
     print("Broker Server initialized on", bind_address)
-    return rpc_server, server_task
+    return tcp_server, server_task

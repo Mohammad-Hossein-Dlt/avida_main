@@ -23,9 +23,9 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 echo "----------------------------------------------------"
-echo "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv)"
+echo "Step 2: Installing prerequisites (Git, Python, pip, python-venv)"
 echo "----------------------------------------------------"
-sudo apt-get install -y git python3 python3-pip python3-venv
+sudo apt-get install -y git python python-pip python-venv
 
 echo "----------------------------------------------------"
 echo "Step 3: Cloning the repository from GitHub"
@@ -44,7 +44,7 @@ echo "----------------------------------------------------"
 cd "$TARGET_DIR" || { echo "Failed to change directory to $TARGET_DIR."; exit 1; }
 
 # Create a virtual environment
-python3 -m venv venv
+python -m venv venv
 
 # Activate the virtual environment
 source venv/bin/activate
@@ -79,7 +79,7 @@ After=network.target
 User=$USER_TO_RUN
 WorkingDirectory=$TARGET_DIR
 Environment="PATH=$TARGET_DIR/venv/bin"
-ExecStart=$TARGET_DIR/venv/bin/uvicorn $APP_FILE:$APP_VARIABLE --host 0.0.0.0 --port 8000
+ExecStart=$TARGET_DIR/venv/bin/fastapi run main.py
 Restart=always
 RestartSec=5
 
