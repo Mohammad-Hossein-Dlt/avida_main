@@ -23,9 +23,9 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 echo "----------------------------------------------------"
-echo "Step 2: Installing prerequisites (Git, Python, pip, python-venv)"
+echo "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv)"
 echo "----------------------------------------------------"
-sudo apt-get install -y git python python-pip python-venv
+sudo apt-get install -y git python3 python3-pip python3-venv
 
 echo "----------------------------------------------------"
 echo "Step 3: Cloning the repository from GitHub"
@@ -44,7 +44,7 @@ echo "----------------------------------------------------"
 cd "$TARGET_DIR" || { echo "Failed to change directory to $TARGET_DIR."; exit 1; }
 
 # Create a virtual environment
-python -m venv venv
+python3 -m venv venv
 
 # Activate the virtual environment
 source venv/bin/activate
