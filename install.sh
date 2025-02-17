@@ -1,5 +1,11 @@
 #!/bin/bash
 
+colored_text(){
+  local color=${1: -"32"}
+  local text=$2
+  echo -e "\e[${color}m$text\e[0m"
+}
+
 # Variables - modify as needed
 REPO_URL="Mohammad-Hossein-Dlt/avida_main"
 TARGET_DIR="/home/fastapi-project"
@@ -16,32 +22,32 @@ else
   USER_TO_RUN="$(whoami)"
 fi
 
-echo "----------------------------------------------------"
-echo "Step 1: Updating the system"
-echo "----------------------------------------------------"
+colored_text "----------------------------------------------------"
+colored_text "Step 1: Updating the system"
+colored_text "----------------------------------------------------"
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
-echo "----------------------------------------------------"
-echo "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv)"
-echo "----------------------------------------------------"
+colored_text "----------------------------------------------------"
+colored_text "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv)"
+colored_text "----------------------------------------------------"
 sudo apt-get install -y git python3 python3-pip python3-venv
 
-echo "----------------------------------------------------"
-echo "Step 3: Cloning the repository from GitHub"
-echo "----------------------------------------------------"
+colored_text "----------------------------------------------------"
+colored_text "Step 3: Cloning the repository from GitHub"
+colored_text "----------------------------------------------------"
 # Remove the target directory if it exists (optional)
 if [ -d "$TARGET_DIR" ]; then
-  echo "Directory $TARGET_DIR exists. Removing it..."
+  colored_text "Directory $TARGET_DIR exists. Removing it..."
   sudo rm -rf "$TARGET_DIR"
 fi
 
 git clone https://github.com/$REPO_URL "$TARGET_DIR"
 
-echo "----------------------------------------------------"
-echo "Step 4: Setting up the virtual environment and installing dependencies"
-echo "----------------------------------------------------"
-cd "$TARGET_DIR" || { echo "Failed to change directory to $TARGET_DIR."; exit 1; }
+colored_text "----------------------------------------------------"
+colored_text "Step 4: Setting up the virtual environment and installing dependencies"
+colored_text "----------------------------------------------------"
+cd "$TARGET_DIR" || { colored_text "31" "Failed to change directory to $TARGET_DIR."; exit 1; }
 
 # Create a virtual environment
 python3 -m venv venv
@@ -55,18 +61,18 @@ pip install wheel
 
 # Install project dependencies if a requirements.txt file exists
 if [ -f requirements.txt ]; then
-  echo "Installing project dependencies..."
+  colored_text "Installing project dependencies..."
   pip install -r requirements.txt
 else
-  echo "requirements.txt not found. Please install dependencies manually."
+  colored_text "31" "requirements.txt not found. Please install dependencies manually."
 fi
 
 # Deactivate the virtual environment (optional)
 deactivate
 
-echo "----------------------------------------------------"
-echo "Step 5: Creating a systemd service file for automatic FastAPI startup"
-echo "----------------------------------------------------"
+colored_text "----------------------------------------------------"
+colored_text "Step 5: Creating a systemd service file for automatic FastAPI startup"
+colored_text "----------------------------------------------------"
 SERVICE_FILE="/etc/systemd/system/fastapi.service"
 
 # Create the service file using tee
@@ -87,23 +93,23 @@ RestartSec=5
 WantedBy=multi-user.target
 EOL
 
-echo "Service file created at $SERVICE_FILE"
+colored_text "Service file created at $SERVICE_FILE"
 
-echo "----------------------------------------------------"
-echo "Step 6: Reloading systemd and enabling the service"
-echo "----------------------------------------------------"
+colored_text "----------------------------------------------------"
+colored_text "Step 6: Reloading systemd and enabling the service"
+colored_text "----------------------------------------------------"
 sudo systemctl daemon-reload
 sudo systemctl enable fastapi.service
 sudo systemctl restart fastapi.service
 
-echo "----------------------------------------------------"
-echo "Step 7: Configuring the firewall to open ports for external access"
-echo "----------------------------------------------------"
+colored_text "----------------------------------------------------"
+colored_text "Step 7: Configuring the firewall to open ports for external access"
+colored_text "----------------------------------------------------"
 # Install ufw if not already installed
 sudo apt-get install -y ufw
 
 # Allow SSH (port 22) to ensure remote access is not blocked
-echo "Allowing SSH on port 22"
+colored_text "Allowing SSH on port 22"
 sudo ufw allow 22/tcp
 
 # Enable ufw if it's not enabled already (this may prompt for confirmation)
@@ -111,17 +117,17 @@ sudo ufw --force enable
 
 # Loop over the ports array and open each port for TCP traffic
 for port in "${PORTS[@]}"; do
-  echo "Allowing TCP traffic on port $port"
+  colored_text "Allowing TCP traffic on port $port"
   sudo ufw allow "$port/tcp"
 done
 
 # Reload ufw to apply changes
 sudo ufw reload
 
-echo "----------------------------------------------------"
-echo "FastAPI is now running as a systemd service and the firewall is configured."
-echo "After a server restart, the application will start automatically."
-echo "To check the service status, run:"
-echo "  sudo systemctl status fastapi.service"
-echo "To check the firewall status, run:"
-echo "  sudo ufw status"
+colored_text "----------------------------------------------------"
+colored_text "FastAPI is now running as a systemd service and the firewall is configured."
+colored_text "After a server restart, the application will start automatically."
+colored_text "To check the service status, run:"
+colored_text "  sudo systemctl status fastapi.service"
+colored_text "To check the firewall status, run:"
+colored_text "  sudo ufw status"
