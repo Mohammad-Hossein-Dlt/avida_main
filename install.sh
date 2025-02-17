@@ -28,7 +28,7 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 colored_text "32" "----------------------------------------------------"
-colored_text "32" "Step 2: Installing prerequisites (Git, Python3, pip3, python3-venv)"
+colored_text "32" "Step 2: Installing prerequisites (Git, Python3, pip, python3-venv)"
 colored_text "32" "----------------------------------------------------"
 sudo apt-get install -y git python3 python3-pip python3-venv
 
