@@ -55,13 +55,13 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Upgrade pip, setuptools, and wheel to avoid build issues
-pip install --upgrade pip
-pip install wheel
+pip3 install --upgrade pip
+pip3 install wheel
 
 # Install project dependencies if a requirements.txt file exists
 if [ -f requirements.txt ]; then
   colored_text "32" "Installing project dependencies..."
-  pip install -r requirements.txt
+  pip3 install -r requirements.txt
 else
   colored_text "31" "requirements.txt not found. Please install dependencies manually."
 fi
