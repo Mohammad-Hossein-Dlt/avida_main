@@ -10,8 +10,8 @@ class ChatSession(Document):
     user_id: str
     title: str
     messages: List[ChatMessage] = Field(default_factory=list)
-    created_at: datetime = Field(default=datetime.now(pytz.UTC))
-    updated_at: datetime = Field(default=datetime.now(pytz.UTC))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(pytz.UTC))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(pytz.UTC))
 
     class Settings:
         name = "chat_sessions"

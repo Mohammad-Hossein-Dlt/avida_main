@@ -56,14 +56,6 @@ async def websocket_endpoint(
     session_id = pars_null(session_id)
     print(session_id)
 
-    """
-    وقتی کلاینت به این endpoint وصل می‌شود، ابتدا کانکشن در
-    ConnectionManager ثبت می‌شود. سپس تلاش می‌کنیم جلسه چت را از دیتابیس دریافت کنیم.
-    اگر وجود نداشت، یک جلسه جدید ایجاد می‌کنیم.
-    سپس در حلقه بی‌نهایت منتظر دریافت پیام از کلاینت می‌مانیم؛
-    هر پیام دریافتی در سند جلسه ذخیره شده و به تمام کلاینت‌های متصل به آن جلسه broadcast می‌شود.
-    """
-
     session = await ChatSession.get(session_id)
     if not session:
         session = ChatSession(user_id=current_user.user_id, title="Chat Session")
@@ -91,4 +83,4 @@ async def websocket_endpoint(
             await manager.broadcast(session_id, response)
     except WebSocketDisconnect:
         manager.disconnect(session_id, websocket)
-        await manager.broadcast(session_id, {"info": "یک کلاینت از اتصال قطع شد."})
+        await manager.broadcast(session_id, {"info": "One client disconnected."})

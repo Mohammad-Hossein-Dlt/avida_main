@@ -12,7 +12,7 @@ REPO_URL="Mohammad-Hossein-Dlt/avida_main"
 TARGET_DIR="/home/fastapi-project"
 
 # Ports to open in the firewall for external access
-PORTS=("8000" "1234")
+PORTS=("8000" "9011")
 
 # Determine the user to run the service (if the script is executed with sudo)
 if [ -n "$SUDO_USER" ]; then
