@@ -1,4 +1,4 @@
-from data.model.assistant_data_model import EditAssistant
+from data.model.assistant_data_model import SingleAssistant
 from utils.db_dependency import db_dependency
 from fastapi import APIRouter, status, UploadFile, File, Depends
 from actions.assistant_actions import (
@@ -38,7 +38,7 @@ async def insert_agent(
 @router.post("/edit_assistant/", status_code=status.HTTP_200_OK)
 async def edit_agent(
         db: db_dependency,
-        data: EditAssistant = Depends(EditAssistant),
+        data: SingleAssistant = Depends(SingleAssistant),
         image_file: UploadFile = File(None),
         delete_image: bool | None = None,
 ):

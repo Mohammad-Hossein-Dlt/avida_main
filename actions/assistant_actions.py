@@ -4,7 +4,7 @@ from data.model.response_model import ResponseMessage
 from storage.storage import Buckets, create_directory, upload_file, storage_delete_file
 from utils.db_dependency import db_dependency
 from fastapi import UploadFile, File
-from data.model.assistant_data_model import EditAssistant
+from data.model.assistant_data_model import SingleAssistant
 from utils.check_nulls import none_analysis
 from utils.path_manager import make_path
 from fastapi import HTTPException
@@ -52,10 +52,10 @@ async def fetch_single_assistant_for_edit(
 
 async def insert_assistant(
         db: db_dependency,
-        data: EditAssistant,
+        data: SingleAssistant,
         image_file: UploadFile = File(None),
 ):
-    analysis = none_analysis(data, [data.Id])
+    analysis = none_analysis(data, [data.Id, data.Image])
 
     if analysis.have_none:
         raise HTTPException(422,
@@ -99,7 +99,7 @@ async def insert_assistant(
 
 async def edit_assistant(
         db: db_dependency,
-        data: EditAssistant,
+        data: SingleAssistant,
         image_file: UploadFile = File(None),
         delete_image: bool | None = None,
 ):

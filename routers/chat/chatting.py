@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 from typing import List, Dict
 import pytz
@@ -73,14 +74,19 @@ async def websocket_endpoint(
 
             response = conversation(get_chats(session.messages))
 
-            new_assistant_message = ChatMessage(role=RoleEntities.assistant.name, content=response)
+            response_string = ""
+            for word in response:
+                await manager.broadcast(session_id, word)
+                response_string += word
+                time.sleep(0.2)
+
+            new_assistant_message = ChatMessage(role=RoleEntities.assistant.name, content=response_string)
             session.messages.append(new_assistant_message)
 
             session.updated_at = datetime.now(pytz.UTC)
 
             await ChatSession.save(session)
 
-            await manager.broadcast(session_id, response)
     except WebSocketDisconnect:
         manager.disconnect(session_id, websocket)
         await manager.broadcast(session_id, {"info": "One client disconnected."})

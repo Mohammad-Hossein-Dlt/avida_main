@@ -6,8 +6,10 @@ def conversation(messages: list):
     completion = gpt_client.chat.completions.create(
         model='gpt-4o',
         messages=messages,
+        stream=True
     )
 
-    response = completion.choices[0].message.content
-
-    return response
+    for chunk in completion:
+        response = chunk.choices[0].delta.content
+        if response is not None:
+            yield response
