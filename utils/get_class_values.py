@@ -11,8 +11,8 @@ def get_class_values(obj: object, excludes: list | None = None) -> dict:
     return values
 
 
-def get_var_name(obj: object, var) -> str:
+def get_var_name_for_nones(obj: object, var) -> str:
     for name, value in vars(obj).items():
         if not name.startswith('__') and type(value) is not classmethod:
-            if id(var) == id(value):
+            if var is name:
                 return name

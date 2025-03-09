@@ -55,7 +55,7 @@ async def insert_assistant(
         data: SingleAssistant,
         image_file: UploadFile = File(None),
 ):
-    analysis = none_analysis(data, [data.Id, data.Image])
+    analysis = none_analysis(data, [data.Enums.Id, data.Enums.Image])
 
     if analysis.have_none:
         raise HTTPException(422,

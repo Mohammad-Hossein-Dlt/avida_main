@@ -1,4 +1,4 @@
-from utils.get_class_values import get_class_values, get_var_name
+from utils.get_class_values import get_class_values
 
 
 class NoneAnalysis:
@@ -14,10 +14,6 @@ def none_analysis(obj: object, excludes: list | None = None):
 
     if excludes is None:
         excludes = []
-
-    excludes = [
-        get_var_name(obj, i) for i in excludes
-    ]
 
     params = get_class_values(
         obj,
