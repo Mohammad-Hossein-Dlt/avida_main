@@ -1,6 +1,4 @@
 import asyncio
-import json
-import uuid
 from asyncio import Task
 from datetime import datetime
 import pytz
@@ -10,12 +8,6 @@ from main_database.database import sessionLocal
 from main_database.models import UserTemp
 from main_database.database import check_database, engine
 from main_database.models import Base
-from message_broker.holder import QueueNameHolder
-from message_broker.producer_service import start_up_broker_server
-# from message_broker.consumer_service import send_message_broker
-# from message_broker.zeromq.server import start_up_zeromq_server
-# from message_broker.zeromq.client import send_message_zeromq
-# from message_broker.zeromq.proxy import start_proxy_task
 from chats_database.database import init_chats_db
 from routers.admin import assistant
 from routers.general import verify_phone
@@ -64,25 +56,9 @@ async def lifespan(app: FastAPI):
 
     await init_chats_db()
 
-    # rpc_server, queue_name, server_task = await start_up_broker_server("queue_name")
-    # QueueNameHolder.queue_name = queue_name
-    #
-    # proxy_task, proxy = await start_proxy_task()
-    #
-    # tcp_server, zeromq_task = await start_up_zeromq_server("tcp://0.0.0.0:1234")
-
     update_task = start_update()
 
     yield
-
-    # await rpc_server.close()
-    # server_task.cancel()
-    #
-    # proxy.close_socket()
-    # proxy_task.cancel()
-    #
-    # await tcp_server.close_socket()
-    # zeromq_task.cancel()
 
     update_task.cancel()
 
@@ -110,18 +86,6 @@ app.include_router(chatting.router, prefix=BASE_URL)
 
 @app.post("/send_message")
 async def send_message(request: Request):
-    # correlation_id = {"user_id": 1, "unique_id": uuid.uuid4().hex}
-    #
-    # encode_id = json.dumps(correlation_id)
-
-    # response = await send_message_broker(
-    #     correlation_id=encode_id,
-    #     payload=message,
-    #     queue_name=QueueNameHolder.queue_name,
-    # )
-
-    # response = await send_message_zeromq(encode_id, message, "tcp://0.0.0.0:12345")
-
     client_ip = request.client.host
 
     forwarded_ip = request.headers.get("X-Forwarded-For")
